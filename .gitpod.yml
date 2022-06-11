@@ -1,0 +1,7 @@
+# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - before: |
+      sudo apt update
+      sudo apt upgrade -y
+      sudo apt install -y libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libspeechd-dev libxkbcommon-dev libssl-dev librust-gdk-sys-dev librust-atk-dev librust-pangocairo-dev librust-gdk-pixbuf-dev
+    init: cargo build
