@@ -11,8 +11,8 @@ fn main() {
     let mut length: String = String::new();
 
     let gen_passwd = |length| -> String {
-    let password = thread_rng().sample_iter(Alphanumeric).take(length).map(char::from).collect();
-    password
+        let password = thread_rng().sample_iter(Alphanumeric).take(length).map(char::from).collect();
+        password
     };
 
     println!("Welcome to password_generator {}!", VERSION);
