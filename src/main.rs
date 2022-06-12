@@ -1,5 +1,5 @@
+use rand::prelude::*;
 use rand::distributions::Alphanumeric;
-use rand::{thread_rng, Rng};
 use std::io;
 use std::io::Write;
 use std::process;
@@ -11,7 +11,7 @@ fn main() {
     let mut length: String = String::new();
 
     let gen_passwd = |length| -> String {
-    let password: String = thread_rng().sample_iter(Alphanumeric).take(length).collect();
+    let password = thread_rng().sample_iter(Alphanumeric).take(length).map(char::from).collect();
     password
     };
 
