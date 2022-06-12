@@ -1,41 +1,58 @@
+#![windows_subsystem = "windows"]
+
+use eframe::egui;
 use rand::prelude::*;
 use rand::distributions::Alphanumeric;
-use std::io;
-use std::io::Write;
-use std::process;
 
 const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
 
 fn main() {
-    let mut length: String = String::new();
 
-    let gen_passwd = |length| -> String {
-        let password = thread_rng().sample_iter(Alphanumeric).take(length).map(char::from).collect();
-        password
+    let native_options = eframe::NativeOptions {
+        initial_window_size: Some(egui::vec2(1024.0, 768.0)),
+        resizable: false,
+        ..Default::default()
     };
 
-    println!("Welcome to password_generator {}!", VERSION);
-    println!("");
-
-    print!("Please enter the length of your new password: ");
-    io::stdout().flush().expect("Failed to flush the line!");
-
-    io::stdin()
-        .read_line(&mut length)
-        .expect("Failed to read the line!");
-
-    println!("");
-
-    let length: usize = match length.trim().parse() {
-        Ok(num) => num,
-        Err(_) => process::exit(1),
-    };
-
-    let new_password = gen_passwd(length);
-
-    println!("Your new password is:");
-    println!("");
-    println!("{}", new_password);
-    println!("");
+    eframe::run_native(
+        "Password Generator 0.1.0",
+        native_options,
+        Box::new(|cc| Box::new(PasswordGenerator::new(cc)))
+    )
 }
+
+#[derive(Default)]
+struct PasswordGenerator {}
+
+impl PasswordGenerator {
+    fn new(__cc: &eframe::CreationContext<'_>) -> Self {
+        Self::default()
+    }
+}
+
+impl eframe::App for PasswordGenerator {
+    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
+            egui::menu::bar(ui, |ui| {
+                ui.menu_button("Datei", |ui| {
+                    if ui.button("Beenden...").clicked() {
+                        frame.quit();
+                    }
+                });
+            });
+        });
+
+        egui::CentralPanel::default().show(ctx, |ui| {
+            ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+                ui.add_space(64.0);
+                ui.label("Test");
+            });
+        });
+    }
+}
+
+    // let gen_passwd = |length| -> String {
+    //     let password = thread_rng().sample_iter(Alphanumeric).take(length).map(char::from).collect();
+    //     password
+    // };
